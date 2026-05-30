@@ -1,0 +1,37 @@
+# Unity generated files
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
+
+# OS files
+.DS_Store
+.DS_Store?
+Thumbs.db
+__MACOSX/
+
+# Unity specific
+*.apk
+*.aab
+*.unitypackage
+*.app
+crashlytics-build.properties
+
+# Builds
+*.exe
+*.dll
+*.so
+*.dylib

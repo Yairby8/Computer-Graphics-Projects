@@ -1,0 +1,130 @@
+#pragma kernel CSMain
+
+// Shader parameters
+RWTexture2D<float4> Result; // RenderTexture onto which the scene is rendered
+float4x4 _CamToWorld; // Unity Camera to World transformation matrix
+float4x4 _CamInverseProjection; // Inverse of Unity's Camera projection matrix
+Texture2D<float4> _SkyboxTexture; // Skybox texture
+SamplerState sampler_SkyboxTexture; // Skybox texture sampler
+float4 _DirectionalLight; // Direction of the light, encoded in the xyz components
+int _BounceLimit; // Number of bounces (reflections or refractions) allowed per ray
+int _SceneIndex; // Index of the scene to display
+
+// Constants
+static const float PI = 3.14159265f;
+static const float EPS = 0.0001f;
+
+// Imports
+#include "UnityCG.cginc" // Unity shader library
+#include "Ray.cginc" // Ray, RayHit and Material struct definitions
+#include "Primitives.cginc" // Functions to detect collisions with geometric primitives
+#include "Shading.cginc" // Functions to aid in shading
+#include "Scenes.cginc" // Scene definitions
+
+// Casts a given ray into the currently selected scene
+// Returns a the closest collision to the ray origin, i.e. the "Best Hit"
+RayHit intersectScene(Ray ray) {
+    switch(_SceneIndex) {
+        case 1:
+        return intersectScene1(ray);
+        case 2:
+        return intersectScene2(ray);
+        case 3:
+        return intersectScene3(ray);
+        case 4:
+        return intersectScene4(ray);
+        case 5:
+        return intersectScene5(ray);
+        default:
+        return intersectScene0(ray);
+    }
+}
+
+// Returns the color associated with the given ray and hit point 
+float3 shadeHit(Ray ray, RayHit hit) {
+    float3 n = normalize(hit.normal);
+    float3 v = normalize(-ray.direction);      // from hit -> camera
+    float3 l = normalize(-_DirectionalLight.xyz); // often needed for Unity directional light
+
+    // if light is behind the surface, no need to cast a shadow ray
+    if (dot(n, l) <= 0.0f)
+    return 0.0f;
+
+    // Shadow ray
+    Ray shadowRay = CreateRay(hit.position + n * EPS, l, 1.0f);
+    RayHit shadowHit = intersectScene(shadowRay);
+
+    // If the shadow ray hits anything, the point is shadowed (no ambient => black)
+    if (!isinf(shadowHit.distance))
+    return 0.0f; // visibility is set to 0
+
+    // Not in shadow => normal lighting
+    // Corresponds to the forumula: visibility(v+epsilon*n)*BlinnPhong
+    return blinnPhong(n, v, l, 50.0f, hit.material.albedo); // visibility is set to 1
+}
+
+// Returns the color associated with the given ray that has missed all geometry
+float3 shadeMiss(Ray ray) {
+    return sampleSkybox(normalize(ray.direction));
+}
+
+// Traces the given ray in the currently selected scene
+// Returns the color associated with the given ray
+// Edits the given ray accordingly
+float3 trace(inout Ray ray) {
+    // Save original energy (must multiply the returned color by this)
+    float3 e0 = ray.energy;
+
+    // Cast ray into scene
+    RayHit hit = intersectScene(ray);
+
+    // Hit if distance is finite
+    if (!isinf(hit.distance)) {
+        float3 c = shadeHit(ray, hit);
+        // Then prepare next bounce based on material type
+        // Reflective materials have refractiveIndex == -1
+        if (hit.material.refractiveIndex < 0.0f) {
+            reflectRay(ray, hit);
+        }
+        else {
+            refractRay(ray, hit);
+        }     
+        return c * e0;
+    }
+    else {
+        // Miss: kill the ray for future bounces
+        ray.energy = 0;
+        float3 c = shadeMiss(ray);
+        return c * e0;
+    }
+}
+
+// Creates and traces a view ray for each image pixel, then sets the
+// associated pixel's color according to the ray's journey throughout the scene 
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID) {
+    // Get the RenderTexture dimensions
+    uint width, height;
+    Result.GetDimensions(width, height);
+
+    // Transform pixel to UV [-1, 1] range
+    float2 pixelOffset = 0.5;
+    float2 uv = float2((id.xy + pixelOffset) / float2(width, height) * 2.0f - 1.0f);
+
+    // Create the initial view ray
+    Ray ray = CreateViewRay(uv);
+    float3 finalColor = float3(0, 0, 0);
+
+    // Loop through the bounces up to _BounceLimit
+    for (int i = 0; i < _BounceLimit; i++) {
+        finalColor += trace(ray); // Accumulate color from each bounce
+
+        // Stop tracing if the ray has no more energy
+        if (!any(ray.energy)) {
+            break;
+        }
+    }
+
+    // Set final pixel color
+    Result[id.xy] = float4(finalColor, 1);
+}

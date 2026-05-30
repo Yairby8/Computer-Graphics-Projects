@@ -1,0 +1,2 @@
+Part 1 Q6:
+The flat shading function works by duplicating each vertex such that each newly formed triangle has 3 unique vertices. In effect, all 3 vertices of a single triangle will share the same vertex normal (the face normal). In contrast, when flat shading isn't applied the normal of a single vertex will take into account the calculation performed in each triangle that shares that vertex, creating a smoother appearance.
