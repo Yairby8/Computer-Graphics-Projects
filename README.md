@@ -1,6 +1,6 @@
-# 🎨 Computer Graphics Projects
+# Computer Graphics Projects
 
-A collection of four GPU and rendering projects built from the ground up — covering the full spectrum from skeletal animation and mesh geometry to procedural shaders and real-time ray tracing. All implemented in **Unity** with **C#** and **HLSL/Cg**.
+A collection of four GPU and rendering projects built from the ground up - covering the full spectrum from skeletal animation and mesh geometry to procedural shaders and real-time ray tracing. All implemented in **Unity** with **C#** and **HLSL/Cg**.
 
 ---
 
@@ -41,9 +41,3 @@ Each project is a self-contained Unity project. To run any of them:
 - **Mesh Processing** — Computes smooth and flat shading from raw triangle data with per-vertex normal averaging
 - **Shader Programming** — Animated ocean surface with multi-octave Perlin noise displacement and cube-map Fresnel reflections, all on the GPU
 - **Ray Tracing** — Full ray tracer on the GPU with recursive bouncing, refraction through glass, hard shadows, and animated scenes
-
----
-
-## 📄 License
-
-This repository contains projects developed for educational and portfolio purposes.
