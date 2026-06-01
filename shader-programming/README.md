@@ -1,12 +1,12 @@
-# 🌊 GPU Shader Programming
+# 🌊 Shader Programming
 
-Custom vertex and fragment shaders implementing procedural noise, bump mapping, Blinn-Phong lighting, animated water, and environment-mapped reflections — all running on the GPU.
+A suite of GPU shaders implementing procedural noise generation, tangent-space bump mapping, Blinn-Phong illumination, animated water with vertex displacement, and environment-mapped reflections — all running entirely on the GPU.
 
 ---
 
 ## 🎯 Overview
 
-This project explores GPU shader programming through a series of progressively complex shaders written in HLSL/Cg for Unity. Topics range from basic procedural noise generation to a fully animated water surface with displacement, bump mapping, and cube-map reflections.
+This project explores real-time GPU rendering through a series of progressively complex vertex and fragment shaders written in HLSL/Cg. It covers the full pipeline from basic noise functions to a fully animated ocean surface with multi-octave Perlin noise displacement, procedural normals, and Fresnel-weighted cube-map reflections.
 
 ---
 

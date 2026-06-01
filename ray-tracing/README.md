@@ -1,12 +1,12 @@
-# 💎 GPU Ray Tracing
+# 💎 Ray Tracing
 
-A real-time ray tracer implemented as a Unity compute shader, featuring recursive reflections, Snell's law refraction, shadow casting, and multiple geometric primitives.
+A real-time ray tracer running on the GPU as a Unity compute shader — featuring recursive reflections, physically-based refraction via Snell's law, hard shadow casting, and multiple geometric primitives.
 
 ---
 
 ## 🎯 Overview
 
-This project implements a complete ray tracing pipeline on the GPU using Unity's compute shader system. Rays are cast from the camera through each pixel, tested against scene geometry, and shaded with Blinn-Phong lighting. The tracer supports recursive bouncing for mirror reflections and physically-based refraction through transparent materials.
+This project implements a complete ray tracing renderer on the GPU. Rays are generated from camera parameters, tested against scene geometry (spheres, planes, triangles, cylinders), and shaded with Blinn-Phong lighting. The tracer supports configurable recursive bouncing for mirror reflections and physically-correct refraction through transparent materials, including total internal reflection.
 
 ---
 

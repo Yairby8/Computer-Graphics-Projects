@@ -1,12 +1,12 @@
-# 🔺 Mesh Processing & Shading
+# 🔺 Mesh Processing
 
-Loading, processing, and rendering 3D meshes from OBJ files with custom normal calculation and support for both flat and smooth shading modes.
+A 3D mesh processing pipeline that loads Wavefront OBJ models, computes surface normals from raw triangle data, and renders geometry with both flat and smooth shading — all implemented from first principles.
 
 ---
 
 ## 🎯 Overview
 
-This project implements a complete mesh processing pipeline: parsing Wavefront OBJ files, computing surface normals, and rendering meshes with either flat or smooth (Gouraud) shading. All normal calculations are done manually using cross products and vertex-normal averaging.
+This project builds a complete mesh processing system: parsing OBJ files, computing per-vertex normals via cross products and face-normal averaging, and supporting both flat (faceted) and smooth (Gouraud) shading through vertex manipulation. No built-in normal generators are used.
 
 ---
 

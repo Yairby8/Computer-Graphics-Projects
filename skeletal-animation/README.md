@@ -1,12 +1,12 @@
-# 🦴 Skeletal Animation & Forward Kinematics
+# 🦴 Skeletal Animation
 
-Real-time character animation driven by BVH (Biovision Hierarchy) motion capture data, with custom implementations of matrix transforms, quaternion math, and spherical linear interpolation (SLERP).
+Real-time character animation driven by BVH (Biovision Hierarchy) motion capture data, with a custom forward kinematics pipeline, hand-rolled matrix transforms, and quaternion SLERP interpolation.
 
 ---
 
 ## 🎯 Overview
 
-This project parses BVH motion capture files and renders an animated skeleton in Unity. The entire transformation pipeline — rotation matrices, quaternion operations, and interpolation — is implemented from scratch without relying on Unity's built-in `Quaternion` class for the core logic.
+This project implements a complete skeletal animation system that parses BVH motion capture files and renders an animated character in real time. The entire transformation pipeline — rotation matrices, quaternion operations, and frame interpolation — is built from scratch without relying on Unity's built-in `Quaternion` class for the core math.
 
 ---
 
@@ -90,4 +90,4 @@ Converts Euler angles with arbitrary axis ordering to a unit quaternion via axis
 
 1. Open this folder as a Unity project
 2. Load `MainScene.unity`
-3. Press Play and toggle the animation controls in the Inspector
+3. Press Play and use the Inspector to toggle animation and interpolation
